@@ -23,7 +23,7 @@ jobs:
         cache: 'npm'
 
     # 3. Instala dependencias (rápido y seguro)
-    - run: npm ci
+    - run: npm i
 
     # 4. Corre los tests (si tienes). 
     # El flag --passWithNoTests evita que falle si aún no has escrito tests.
