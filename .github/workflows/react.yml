@@ -1,0 +1,34 @@
+name: CI React
+
+# Se ejecuta automáticamente cuando TÚ haces un push a main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  check-code:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Descarga el código que acabas de subir
+    - uses: actions/checkout@v4
+
+    # 2. Prepara el entorno (Node.js)
+    - name: Use Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    # 3. Instala dependencias (rápido y seguro)
+    - run: npm ci
+
+    # 4. Corre los tests (si tienes). 
+    # El flag --passWithNoTests evita que falle si aún no has escrito tests.
+    - run: npm test -- --passWithNoTests
+
+    # 5. Verifica que el código compila bien (sin errores de sintaxis)
+    # Si este paso falla, te llegará un correo de aviso de GitHub.
+    - run: npm run build
