@@ -1,29 +1,34 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+name: CI React
 
-name: React CI/CD
-
+# Se ejecuta automáticamente cuando TÚ haces un push a main
 on:
   push:
-    branches: [ deploy ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  build:
-
+  check-code:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
+    # 1. Descarga el código que acabas de subir
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+
+    # 2. Prepara el entorno (Node.js)
+    - name: Use Node.js 20
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 20
         cache: 'npm'
+
+    # 3. Instala dependencias (rápido y seguro)
     - run: npm ci
-    - run: npm test
-    - run: npm run build --if-present
+
+    # 4. Corre los tests (si tienes). 
+    # El flag --passWithNoTests evita que falle si aún no has escrito tests.
+    - run: npm test -- --passWithNoTests
+
+    # 5. Verifica que el código compila bien (sin errores de sintaxis)
+    # Si este paso falla, te llegará un correo de aviso de GitHub.
+    - run: npm run build
