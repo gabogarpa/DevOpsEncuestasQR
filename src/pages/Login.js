@@ -8,12 +8,10 @@ function Login() {
         e.preventDefault();
 
         try {
-            // CAMBIO AQUÍ: Usamos signInWithOtp en lugar de signIn
             const { data, error } = await client.auth.signInWithOtp({
                 email: email,
                 options: {
-                    // Redirige al usuario al mismo sitio después de hacer clic en el correo
-                    emailRedirectTo: window.location.origin, 
+                    emailRedirectTo: window.location.origin,
                 }
             });
 
@@ -32,11 +30,11 @@ function Login() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input 
-                    type="email" 
+                <input
+                    type="email"
                     name="email"
                     placeholder="youremailsite.com"
-                    onChange={(e) => setEmail(e.target.value)} 
+                    onChange={(e) => setEmail(e.target.value)}
                 />
                 <button type="submit">
                     Send
