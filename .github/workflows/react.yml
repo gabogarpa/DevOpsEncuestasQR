@@ -1,6 +1,5 @@
-name: CI React
+name: CI SonarQube
 
-# Se ejecuta automáticamente cuando TÚ haces un push a main
 on:
   push:
     branches: [ "main" ]
@@ -8,27 +7,30 @@ on:
     branches: [ "main" ]
 
 jobs:
-  check-code:
+  build-and-analyze:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Descarga el código que acabas de subir
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # IMPORTANTE: SonarQube necesita todo el historial de git
 
-    # 2. Prepara el entorno (Node.js)
-    - name: Use Node.js 20
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: 'npm'
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
 
-    # 3. Instala dependencias (rápido y seguro)
-    - run: npm i
+      - run: npm install
+      
+      # Si tienes tests configurados, esto genera el reporte de cobertura
+      - run: npm test -- --passWithNoTests --coverage
 
-    # 4. Corre los tests (si tienes). 
-    # El flag --passWithNoTests evita que falle si aún no has escrito tests.
-    - run: npm test -- --passWithNoTests
+      - run: npm run build
 
-    # 5. Verifica que el código compila bien (sin errores de sintaxis)
-    # Si este paso falla, te llegará un correo de aviso de GitHub.
-    - run: npm run build
+      # --- NUEVO PASO: SONARCLOUD ---
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token por defecto de GitHub
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # El que creamos nosotros
