@@ -18,7 +18,6 @@ function GenerarQR() {
                 const { data, error } = await client
                     .from('encuestas')
                     .select('id, nombre')
-                    .order('created_at', { ascending: false });
 
                 if (error) throw error;
 
