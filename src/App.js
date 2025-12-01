@@ -7,6 +7,7 @@ import CrearEncuesta from './pages/CrearEncuesta';
 import GenerarQR from './pages/GenerarQR';
 import EscanearQR from './pages/EscanearQR';
 import FormularioEncuesta from './pages/FormularioEncuesta';
+import Respuestas from './pages/Respuestas';
 
 function App() {
   return (
