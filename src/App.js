@@ -23,6 +23,7 @@ function App() {
         <Route path="/admin/generar" element={<GenerarQR />} />
         <Route path="/escanear" element={<EscanearQR />} />
         <Route path="/encuesta/:id" element={<FormularioEncuesta />} />
+        <Route path="/admin/respuestas" element={<Respuestas />} />
       </Routes>
     </div>
   );

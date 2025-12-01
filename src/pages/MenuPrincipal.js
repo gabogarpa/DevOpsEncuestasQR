@@ -35,6 +35,9 @@ function MenuPrincipal() {
                 <Link to="/admin/generar">
                     <button style={{ padding: 10, width: '100%', cursor: 'pointer' }}> 🖇️ Generar QR</button>
                 </Link>
+                <Link to="/admin/respuestas">
+                    <button style={{ padding: 10, width: '100%', cursor: 'pointer' }}> 📊 Ver Respuestas </button>
+                </Link>
             </div>
             {/* Botón de Salir pequeño arriba a la derecha */}
             <button
