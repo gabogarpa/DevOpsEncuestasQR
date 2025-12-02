@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # IMPORTANTE: SonarQube necesita todo el historial de git
+          fetch-depth: 0 
 
       - name: Use Node.js 20
         uses: actions/setup-node@v4
@@ -23,12 +23,10 @@ jobs:
 
       - run: npm install
       
-      # Si tienes tests configurados, esto genera el reporte de cobertura
       - run: npm test -- --passWithNoTests --coverage
 
       - run: npm run build
 
-# --- NUEVO PASO: SONARQUBE CLOUD (Versión Segura) ---
       - name: SonarQube Cloud Scan
         uses: SonarSource/sonarqube-scan-action@v5.3.1
         env:
